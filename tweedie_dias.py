@@ -1,6 +1,9 @@
 from mpmath import loggamma, sqrt, sin, pi, fabs, exp, log, mp, mpf
 from math import exp as mexp
 from sys import exit
+import numpy as np
+from scipy import integrate
+import matplotlib.pyplot as plt
 
 ## nsum.py
 partials = {}
@@ -89,6 +92,7 @@ def pdfz_tweedie(z, theta, alpha):
     return Nz*mexp(theta*z - kappa(theta, alpha))
 
 def Nz_tweedie(z, theta, alpha):
+    #print('Nz_tweedie:', z, theta, alpha)
     # sum of series
     mp.prec = bitprecision
 
@@ -171,7 +175,7 @@ def Nz_tweedie(z, theta, alpha):
         k += 1
         if (k > nmax):
             kconv = k - 1
-            print('Nz_tweedie reached %d terms without convergence' % nmax)
+            print(f'Nz_tweedie reached {nmax} terms without convergence (z: {z})')
             return float('nan')
         pass
     pass
@@ -187,6 +191,30 @@ def Nz_tweedie(z, theta, alpha):
     kconv = k - 1
     return float(sumd)
 
+def quadrature_tweedie(alpha):
+    f = lambda x: pdfz_tweedie(x, -1/2, alpha)
+
+    return integrate.quad(f, 1e-6, 50, points=1000)
+
+def quadrature(f, a, b, p):
+    samples = [None] * p
+
+    for i in range(p):
+        r = np.random.rand() * (b - a) + a
+
+        samples[i] = f(r)
+    
+    return np.mean(samples)
+
 if __name__ == '__main__':
-    print("This is a module.  Do not run it directly.")
-    exit(1)
+    #print("This is a module.  Do not run it directly.")
+    #exit(1)
+
+    # test
+    #print(pdfz_tweedie(1, -1/2, 1/2))
+    print(quadrature_tweedie(0.5))
+
+    #plt.plot(np.linspace(0.1, 5, 300), [quadrature(lambda x: pdfz_tweedie(x, -1/2, 1/2), 0, 20, 1000) for x in np.linspace(0.1, 5, 300)])
+    #plt.show()
+
+    #print(quadrature(lambda x: pdfz_tweedie(x, -1/2, 1/2), 1e-6, 50, 100))
