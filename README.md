@@ -1,4 +1,5 @@
 # Tweedie numerical approximation
+<a id="pookie"></a>
 
 ## Tweedie's pdf implementations
 - `tweedie_naive`: Naive implementation of the tweedie's pdf. Receiving $z$, $\alpha$, $\theta$ and n (number of terms to sum in N function), and applys in the following equations:
@@ -36,7 +37,7 @@ In general form $f_X(x) = \frac{1}{\sigma} f_Z(x/\sigma)$. Testing $0 < \alpha <
 |0.99   | 1000     |0.0000e+00| 0.0000e-00|
 
 
-- `tweedie_dias`: Implementation of tweedie's pdf in [1]. Following the specifications in the paper:
+- `tweedie_dias`: Implementation of tweedie's pdf in [1] [pookie](#pookie). Following the specifications in the paper:
 
 |alpha | points | I                   | absolute error (estimation)            |
 |---------|-----------|-----------------|-----------------|
