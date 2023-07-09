@@ -7,7 +7,7 @@ from scipy import integrate
 ############ tweedie naive ############
 def test_naive():
     for alpha in [0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]:
-        f = lambda x: pdfz_tweedie_naive(x, -1/2, alpha, n=80)
+        f = lambda x: pdfz_tweedie_naive(x, -1/2, alpha, n=80)    # not to strong
 
         print(f'alpha: {alpha}, I: {integrate.quad(f, 0, np.inf, points=1000)}')
 
