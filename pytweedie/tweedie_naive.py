@@ -16,13 +16,13 @@ def N(z, alpha, n):
 
 
 # z, alpha, theta, n
-def pdfz_tweedie_naive(z, theta, alpha, n=1000):
+def pdfz_tweedie(z, theta, alpha, n=1000):
     assert alpha >= 0.01 and alpha <= 0.99
 
     return N(z, alpha, n) * exp(z * theta - x(theta, alpha))
 
-def pdfx_tweedie_naive(x, theta, alpha, lambdaa, n):
-    return (1.0/lambdaa) * pdfz_tweedie_naive(x/lambdaa, theta, alpha, n)
+def pdfx_tweedie(x, theta, alpha, lambdaa, n):
+    return (1.0/lambdaa) * pdfz_tweedie(x/lambdaa, theta, alpha, n)
 
 
 if __name__ == '__main__':

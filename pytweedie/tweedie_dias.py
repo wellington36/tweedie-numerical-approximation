@@ -2,8 +2,6 @@ from mpmath import loggamma, sqrt, sin, pi, fabs,\
 exp, log, mp, mpf
 from math import exp as mexp
 from sys import exit
-import numpy as np
-from scipy import integrate
 
 partials = {}
 
@@ -196,28 +194,7 @@ def Nz_tweedie(z,theta,alpha):
     kconv = k - 1
     return float(sumd)
 
-def quadrature_tweedie(alpha):
-    f = lambda x: pdfz_tweedie(x, -1/2, alpha)
-
-    return integrate.quad(f, 1e-6, 50, points=1000)
-
-def quadrature(f, a, b, p):
-    samples = [None] * p
-
-    for i in range(p):
-        r = np.random.rand() * (b - a) + a
-
-        samples[i] = f(r)
-    
-    return np.mean(samples)
 
 if __name__ == '__main__':
-    #print("This is a module.  Do not run it directly.")
-    #exit(1)
-
-    # test
-    #print(pdfz_tweedie(1, -1/2, 1/2))
-    #print(quadrature_tweedie(0.5))
-
-    for i in [0.5]:
-        print(quadrature_tweedie(i))
+    print("This is a module.  Do not run it directly.")
+    exit(1)
