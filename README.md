@@ -1,5 +1,4 @@
 # Tweedie numerical approximation
-<a id="pookie"></a>
 
 ## Tweedie's pdf implementations
 - `tweedie_naive`: Naive implementation of the tweedie's pdf. Receiving $z$, $\alpha$, $\theta$ and n (number of terms to sum in N function), and applys in the following equations:
@@ -37,7 +36,7 @@ In general form $f_X(x) = \frac{1}{\sigma} f_Z(x/\sigma)$. Testing $0 < \alpha <
 |0.99   | 1000     |0.0000e+00| 0.0000e-00|
 
 
-- `tweedie_dias`: Implementation of tweedie's pdf in [1] [pookie](#pookie). Following the specifications in the paper:
+- `tweedie_dias`: Implementation of tweedie's pdf in [1](#dias). Following the specifications in the paper:
 
 |alpha | points | I                   | absolute error (estimation)            |
 |---------|-----------|-----------------|-----------------|
@@ -54,4 +53,4 @@ In general form $f_X(x) = \frac{1}{\sigma} f_Z(x/\sigma)$. Testing $0 < \alpha <
 |0.99   | 10000     |1.0000e+00| 1.2097e-08|
 
   # Referencies
-  [1]: DIAS NL, RIBEIRO JR PJ. Practical rules for summing the series of the Tweedie probability density function with high-precision arithmetic. An Acad Bras Ciênc [Internet]. 2019;91(4):e20180268. Available from: https://doi.org/10.1590/0001-3765201920180268
+  [1]<a id="dias"></a>: DIAS NL, RIBEIRO JR PJ. Practical rules for summing the series of the Tweedie probability density function with high-precision arithmetic. An Acad Bras Ciênc [Internet]. 2019;91(4):e20180268. Available from: https://doi.org/10.1590/0001-3765201920180268
