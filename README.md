@@ -1,7 +1,18 @@
 # Tweedie numerical approximation
 
 ## Tweedie's pdf implementations
-- `tweedie_naive`: Naive implementation of the tweedie's pdf.
+- `tweedie_naive`: Naive implementation of the tweedie's pdf. Receiving $z$, $\alpha$, $\theta$ and n (number of terms to sum in N function), and applys in the following equations:
+
+$$
+  f_Z(z; \theta, \alpha) = N(z; \alpha) \times exp[z \theta - x(\theta, \alpha)],\ z \geq 0,
+$$
+
+with
+
+$$
+  N(z; \alpha) = \frac{1}{\pi z} \times \sum_{k = 1}^\infty \frac{\Gamma(1 + \alpha k)}{\Gamma(1 + k)} (x)
+$$
+
 
 - `tweedie_dias`: Implementation of tweedie's pdf in [1]. Following the specifications in the paper:
 
