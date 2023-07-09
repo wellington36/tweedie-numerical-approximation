@@ -1,7 +1,5 @@
 from math import sin, pi, exp
 from scipy.special import gamma
-import numpy as np
-from scipy import integrate
 
 def x(theta, alpha):
     return (alpha - 1) / alpha * (theta / (alpha - 1)) ** alpha
@@ -14,8 +12,6 @@ def N(z, alpha, n):
 
     return sum(terms) / (pi * z)
 
-
-# z, alpha, theta, n
 def pdfz_tweedie(z, theta, alpha, n=1000):
     assert alpha >= 0.01 and alpha <= 0.99
 
@@ -26,10 +22,5 @@ def pdfx_tweedie(x, theta, alpha, lambdaa, n):
 
 
 if __name__ == '__main__':
-    #for alpha in [0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]:
-    #    f = lambda x: pdfz_tweedie_naive(x, -1/2, alpha, n=100)
-
-    #    print(f'alpha: {alpha}, I: {integrate.quad(f, 1e-6, 50, points=1000)}')
-
     print("This is a module.  Do not run it directly.")
     exit(1)
