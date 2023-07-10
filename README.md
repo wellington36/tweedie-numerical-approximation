@@ -19,7 +19,7 @@ $$
   x(\theta, \alpha) = \frac{\alpha - 1}{\alpha} \left( \frac{\theta}{\alpha - 1} \right)^\alpha
 $$
 
-In general form $f_X(x) = \frac{1}{\sigma} f_Z(x/\sigma)$. Testing $0 < \alpha < 1$, with Gaussian quadrature to integrate Tweedie densities (with n=80, to avoid mistakes):
+In general form $f_X(x) = \frac{1}{\sigma} f_Z(x/\sigma)$. Testing $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$, with Gaussian quadrature to integrate Tweedie densities (with n=80, to avoid mistakes):
 
 |alpha | points | value                   | absolute error (estimation)           |
 |---------|-----------|-----------------|-----------------|
