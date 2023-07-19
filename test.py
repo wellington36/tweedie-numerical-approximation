@@ -9,7 +9,7 @@ def visualization(tweedie_pdf=pdfz_tweedie_dias, alphas=[0.01, 0.1, 0.2, 0.3, 0.
     for alpha in alphas:
         f = lambda x: tweedie_pdf(x, -1/2, alpha)    # n not to large
 
-        x = np.linspace(1e-6, 5, 1000)
+        x = np.linspace(1e-10, 5, 100)
         y = [f(i) for i in x]
         plt.plot(x, y, label=f'alpha={alpha}')
 
