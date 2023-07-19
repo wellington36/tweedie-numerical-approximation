@@ -1,7 +1,11 @@
 # Tweedie numerical approximation
+Following [2](#dunn2005) and [3](#jorgensen1987) the Tweedie distributions are a family of probability distributions. This family of distributions is characterized by the formula:
 
-## Tweedie's pdf implementations
-- `tweedie_naive`: Naive implementation of the tweedie's pdf. Receiving $z$, $\alpha$, $\theta$ and n (number of terms to sum in N function), and applys in the following equations:
+$$
+  Var(X) = \sigma E[X]^p.
+$$
+
+When X is a random variable with Tweedie's distribution (or $X \sim T_p(\theta, \sigma))$. The tweedie distribution includes some famous distributions like: the normal ($p = 0$), Poisson ($p = 1$), gamma ($p = 2$) and the inverse Gaussian ($p = 3$). Here we are interested in a specific interval for which it has certain calculation difficulties, since the Tweedie distribution does not have a closed formula. Following [1](#dias), we can write the Tweedie's pdf distribution:
 
 $$
   f_Z(z; \theta, \alpha) = N(z; \alpha) \times exp[z \theta - x(\theta, \alpha)],\ z \geq 0,
@@ -19,7 +23,14 @@ $$
   x(\theta, \alpha) = \frac{\alpha - 1}{\alpha} \left( \frac{\theta}{\alpha - 1} \right)^\alpha
 $$
 
-In general form $f_X(x) = \frac{1}{\sigma} f_Z(x/\sigma)$. Testing $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$, with Gaussian quadrature to integrate Tweedie densities (with n=80, to avoid mistakes):
+When $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$ .In general form $f_X(x) = \frac{1}{\sigma} f_Z(x/\sigma)$. For some values of $\alpha$ we have this graphic:
+
+![image](https://github.com/wellington36/tweedie-numerical-approximation/assets/61877847/7844721e-f0d7-4fa4-a10a-a8b85c34f175)
+*Note:* For visualization, $\sigma = 1$ and $\theta = -1/2$
+
+
+## Tweedie's pdf implementations
+- `tweedie_naive`: Naive implementation of the tweedie's pdf. Receiving $z$, $\alpha$, $\theta$ and n (number of terms to sum in N function), and apply it directly to the formula above, with Gaussian quadrature to integrate Tweedie densities (with n=80, to avoid mistakes):
 
 |alpha | points | value                   | absolute error (estimation)           |
 |---------|-----------|-----------------|-----------------|
@@ -54,3 +65,7 @@ In general form $f_X(x) = \frac{1}{\sigma} f_Z(x/\sigma)$. Testing $0 < \alpha <
 
   # Referencies
   [1]<a id="dias"></a>: DIAS NL, RIBEIRO JR PJ. Practical rules for summing the series of the Tweedie probability density function with high-precision arithmetic. An Acad Bras Ciênc [Internet]. 2019;91(4):e20180268. Available from: https://doi.org/10.1590/0001-3765201920180268
+  
+  [2]<a id="dunn2005"></a>: Dunn, P. K. and Smyth, G. K. (2005). Series evaluation of tweedie exponential dispersion model densities. Statistics and Computing, 15(4):267–280.
+  
+  [3]<a id="jorgensen1987"></a>: Jorgensen, B. (1987). Exponential dispersion models. Journal of the Royal Statistical Society. Series B (Methodological), 49(2):127–162.
