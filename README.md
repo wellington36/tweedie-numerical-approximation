@@ -1,11 +1,11 @@
 # Tweedie numerical approximation
-Following [2](#dunn2005) and [3](#jorgensen1987) the Tweedie distributions are a family of probability distributions. This family of distributions is characterized by the formula:
+Following [[2](#dunn2005)] and [[3](#jorgensen1987)] the Tweedie distributions are a family of probability distributions. This family of distributions is characterized by the formula:
 
 $$
   Var(X) = \sigma E[X]^p.
 $$
 
-When X is a random variable with Tweedie's distribution (or $X \sim T_p(\theta, \sigma))$. The tweedie distribution includes some famous distributions like: the normal ($p = 0$), Poisson ($p = 1$), gamma ($p = 2$) and the inverse Gaussian ($p = 3$). Here we are interested in a specific interval for which it has certain calculation difficulties, since the Tweedie distribution does not have a closed formula. Following [1](#dias), we can write the Tweedie's pdf distribution:
+When X is a random variable with Tweedie's distribution (or $X \sim T_p(\theta, \sigma))$. The tweedie distribution includes some famous distributions like: the normal ($p = 0$), Poisson ($p = 1$), gamma ($p = 2$) and the inverse Gaussian ($p = 3$). Here we are interested in a specific interval for which it has certain calculation difficulties, since the Tweedie distribution does not have a closed formula. Following [[1](#dias)], we can write the Tweedie's pdf distribution:
 
 $$
   f_Z(z; \theta, \alpha) = N(z; \alpha) \times exp[z \theta - x(\theta, \alpha)],\ z \geq 0,
@@ -47,7 +47,7 @@ When $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$ .In general form $f_X
 |0.99   | 1000     |0.0000e+00| 0.0000e-00|
 
 
-- `tweedie_dias`: Implementation of tweedie's pdf in [1](#dias). Following the specifications in the paper:
+- `tweedie_dias`: Implementation of tweedie's pdf in [[1](#dias)]. Following the specifications in the paper:
 
 |alpha | points | I                   | absolute error (estimation)            |
 |---------|-----------|-----------------|-----------------|
