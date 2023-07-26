@@ -46,6 +46,8 @@ When $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$ .In general form $f_X
 |0.9     | 1000     |0.0000e+00| 1.0000e-00|
 |0.99   | 1000     |0.0000e+00| 1.0000e-00|
 
+*(time: ~1.5 seconds)*
+
 
 - `tweedie_dias`: Implementation of tweedie's pdf in [[1](#dias)]. Following the specifications in the paper:
 
@@ -62,6 +64,8 @@ When $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$ .In general form $f_X
 |0.8     | 1000     |1.0000e+00| 1.7730e-12|
 |0.9     | 1000     |1.0000e+00| 1.2505e-12|
 |0.99   | 10000     |1.0000e+00| 3.3139e-09|
+
+*(time: ~510 seconds)*
 
   # Referencies
   [1]<a id="dias"></a>: DIAS NL, RIBEIRO JR PJ. Practical rules for summing the series of the Tweedie probability density function with high-precision arithmetic. An Acad Bras Ciênc [Internet]. 2019;91(4):e20180268. Available from: https://doi.org/10.1590/0001-3765201920180268
