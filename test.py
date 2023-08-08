@@ -3,6 +3,7 @@ from pytweedie.tweedie_naive import pdfz_tweedie as pdfz_tweedie_naive
 import numpy as np
 from scipy import integrate
 import matplotlib.pyplot as plt
+import time
 
 ############ visualization ############
 def visualization(tweedie_pdf=pdfz_tweedie_dias, alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
@@ -44,6 +45,11 @@ def test_dias(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
 
 ############ main ############
 if __name__ == '__main__':
+
+    t = time.time()
+
     #test_naive()
     #test_dias()
     visualization()
+
+    print(f'time: {time.time() - t}')
