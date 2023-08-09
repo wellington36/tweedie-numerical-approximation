@@ -51,7 +51,7 @@ def test_dias(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
 
         value, _ = integrate.quad(f, 1e-6, 50, points=1000)
 
-        print(f'alpha: {alpha}, I: {(value, abs(1 - value))}')
+        print(f'alpha: {alpha}, I: {(value, abs(value - 1))}')
 
 
 ############ main ############

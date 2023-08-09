@@ -7,6 +7,7 @@ Psi_a = -5.7573749548413
 Psi_b = 5.74962006661501
 Psi_c = 1.39742867043842
 
+### Tweedie ###
 mp.prec = prec
 
 def x(theta, alpha):

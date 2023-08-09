@@ -32,7 +32,7 @@ When $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$ .In general form $f_X
 ## Tweedie's pdf implementations
 - `tweedie_naive`: Naive implementation of the tweedie's pdf. Receiving $z$, $\alpha$, $\theta$ and n (number of terms to sum in N function), and apply it directly to the formula above, with Gaussian quadrature to integrate Tweedie densities (with n=80, to avoid mistakes):
 
-|alpha | points | value                   | absolute error (estimation)           |
+|alpha | points | value                   | error (|I - 1|)           |
 |---------|-----------|-----------------|-----------------|
 |0.01   | 1000     |$\infty$| $\infty$|
 |0.1     | 1000     |1.0000e+00| 1.5666e-05|
@@ -46,10 +46,36 @@ When $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$ .In general form $f_X
 |0.9     | 1000     |0.0000e+00| 1.0000e-00|
 |0.99   | 1000     |0.0000e+00| 1.0000e-00|
 
+*(time: ~1.5 seconds)*
+
+
+- `tweedie_well`: Our tweedie's pdf implementation, starting from the naive version with modifications:
+
+- Using mpmath with bit precision equal to 300 and evaluating 1000 series terms;
+- The `acelsum` function from the `extrapolation` library with the Richardson's method;
+- Use a trick from [[2]](#dunn2005), divide the terms of the series $b_k$ by $max b_k$;
+- Using a trick from [[1]](#dias), return zero for series terms that can generate errors.
+
+|alpha | points | value                   | error (|I - 1|)           |
+|---------|-----------|-----------------|-----------------|
+|0.01   | 1000     |0.9982e+00| 1.7359e-03|
+|0.1     | 1000     |1.0000e+00| 7.6686e-11|
+|0.2     | 1000     |1.0000e+00| 1.99595e-12|
+|0.3     | 1000     |1.0000e+00| 6.3193e-13|
+|0.4     | 1000     |$\infty$| $\infty$|
+|0.5     | 1000     |$\infty$| $\infty$|
+|0.6     | 1000     |1.0003e-00| 3.7573e-04|
+|0.7     | 1000     |1.0139e+00| 1.3973e-02|
+|0.8     | 1000     |1.03375e+00| 3.3754-02|
+|0.9     | 1000     |$-\infty$| $\infty$|
+|0.99   | 1000     |1.3521e-02| 0.9864e-00|
+
+*(time: ~568 seconds)*
+
 
 - `tweedie_dias`: Implementation of tweedie's pdf in [[1](#dias)]. Following the specifications in the paper:
 
-|alpha | points | I                   | absolute error (estimation)            |
+|alpha | points | I                   | error (|I - 1|) |
 |---------|-----------|-----------------|-----------------|
 |0.01   | 1000     |1.0000e+00| 3.0163e-07|
 |0.1     | 1000     |1.0000e+00| 7.6941e-11|
@@ -62,6 +88,8 @@ When $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$ .In general form $f_X
 |0.8     | 1000     |1.0000e+00| 1.7730e-12|
 |0.9     | 1000     |1.0000e+00| 1.2505e-12|
 |0.99   | 10000     |1.0000e+00| 3.3139e-09|
+
+*(time: ~510 seconds)*
 
   # Referencies
   [1]<a id="dias"></a>: DIAS NL, RIBEIRO JR PJ. Practical rules for summing the series of the Tweedie probability density function with high-precision arithmetic. An Acad Bras Ciênc [Internet]. 2019;91(4):e20180268. Available from: https://doi.org/10.1590/0001-3765201920180268
