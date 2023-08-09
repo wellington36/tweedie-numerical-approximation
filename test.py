@@ -32,7 +32,7 @@ def test_naive(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99])
 ############ tweedie naive ############
 def test_well(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
     for alpha in alphas:
-        f = lambda x: pdfz_tweedie_well(x, -1/2, alpha, n=300)    # n not to large
+        f = lambda x: pdfz_tweedie_well(x, -1/2, alpha, n=1000)
 
         value, _ = integrate.quad(f, 1e-6, 50, points=1000)
 
@@ -60,8 +60,8 @@ if __name__ == '__main__':
     t = time.time()
 
     #test_naive()
-    test_well(alphas=[0.01])
-    #test_dias()
+    test_well()
+    #test_dias(alphas=[0.01])
     #visualization()
 
     print(f'time: {time.time() - t}')
