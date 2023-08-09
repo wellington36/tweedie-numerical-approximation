@@ -30,9 +30,9 @@ When $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$ .In general form $f_X
 
 
 ## Tweedie's pdf implementations
-- `tweedie_naive`: Naive implementation of the tweedie's pdf. Receiving $z$, $\alpha$, $\theta$ and n (number of terms to sum in N function), and apply it directly to the formula above, with Gaussian quadrature to integrate Tweedie densities (with n=80, to avoid mistakes):
+#### `tweedie_naive`: Naive implementation of the tweedie's pdf. Receiving $z$, $\alpha$, $\theta$ and n (number of terms to sum in N function), and apply it directly to the formula above, with Gaussian quadrature to integrate Tweedie densities (with n=80, to avoid mistakes):
 
-|alpha | points | value                   | error (|I - 1|)           |
+| alpha   | points    | I               | error ($\|I - 1\|$)|
 |---------|-----------|-----------------|-----------------|
 |0.01   | 1000     |$\infty$| $\infty$|
 |0.1     | 1000     |1.0000e+00| 1.5666e-05|
@@ -49,14 +49,14 @@ When $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$ .In general form $f_X
 *(time: ~1.5 seconds)*
 
 
-- `tweedie_well`: Our tweedie's pdf implementation, starting from the naive version with modifications:
+#### `tweedie_well`: Our tweedie's pdf implementation, starting from the naive version with modifications:
 
 - Using mpmath with bit precision equal to 300 and evaluating 1000 series terms;
 - The `acelsum` function from the `extrapolation` library with the Richardson's method;
 - Use a trick from [[2]](#dunn2005), divide the terms of the series $b_k$ by $max b_k$;
 - Using a trick from [[1]](#dias), return zero for series terms that can generate errors.
 
-|alpha | points | value                   | error (|I - 1|)           |
+| alpha   | points    | I               | error ($\|I - 1\|$)|
 |---------|-----------|-----------------|-----------------|
 |0.01   | 1000     |0.9982e+00| 1.7359e-03|
 |0.1     | 1000     |1.0000e+00| 7.6686e-11|
@@ -73,9 +73,9 @@ When $0 < \alpha < 1$, when $\alpha = \frac{p - 2}{p - 1}$ .In general form $f_X
 *(time: ~568 seconds)*
 
 
-- `tweedie_dias`: Implementation of tweedie's pdf in [[1](#dias)]. Following the specifications in the paper:
+#### `tweedie_dias`: Implementation of tweedie's pdf in [[1](#dias)]. Following the specifications in the paper:
 
-|alpha | points | I                   | error (|I - 1|) |
+| alpha   | points    | I               | error ($\|I - 1\|$)|
 |---------|-----------|-----------------|-----------------|
 |0.01   | 1000     |1.0000e+00| 3.0163e-07|
 |0.1     | 1000     |1.0000e+00| 7.6941e-11|
