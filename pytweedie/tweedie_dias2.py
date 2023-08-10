@@ -1,5 +1,6 @@
 from mpmath import loggamma, sqrt, sin, pi, fabs,\
 exp, log, mp, mpf
+from pytweedie.utils import *
 from math import exp as mexp
 from sys import exit
 
@@ -30,8 +31,25 @@ def sumthis(x,mysum):
 
     return
 
+def sumthis2(x, mysum):
+    i = 0
+    x = create_lognumber(x)
+    
+    for y in partials[mysum]:
+        if abs(x.exp(bitprecision)) < abs(y.exp(bitprecision)):
+            x, y = y, x
+        pass
+    
+        hi = x * 2 - y
+
+        x = hi
+    
+    partials[mysum][i:] = [x]
+
+    return
+
 def sumall(mysum):
-    return sum(partials[mysum])
+    return partials[mysum][0].exp(precision=bitprecision)
 
 ## Constants
 Psi_a = -5.7573749548413
@@ -124,7 +142,7 @@ def Nz_tweedie(z,theta,alpha):
                     'relerr'
     pass
     eps = mpf('1.0e-10') # a relative error
-    nmax = 10000 # maximum number of terms to sum
+    nmax = 1000 # maximum number of terms to sum
     larg = -1/z # auxiliary
     BB = fabs(kappa(larg,alpha)) # it is possible that BB < 0
     oB = 1/BB # the reciprocal
@@ -173,7 +191,7 @@ def Nz_tweedie(z,theta,alpha):
 # --------------------------------------------------------------------
 # sum without loss of precision
 # --------------------------------------------------------------------
-        sumthis(dk,'sumd')
+        sumthis2(dk,'sumd')
         sumd = sumall('sumd')
         relerr = fabs(bk/sumd)
         if dbgoutput :
@@ -181,11 +199,13 @@ def Nz_tweedie(z,theta,alpha):
             (k,bk,sumd,relerr))
         pass
         k += 1
-        if (k > nmax):
-            kconv = k - 1
-            print('Nz_tweedie reached %d terms without convergence' % nmax)
-            return(float('nan'))
-        pass
+        #if (k > nmax):
+        #    kconv = k - 1
+        #    print('Nz_tweedie reached %d terms without convergence' % nmax)
+        #    return(float('nan'))
+        #pass
+        if (k > kmax):
+            continue
     pass # end of while
     sumd *= mpf(1)/(pi*z)
     sumd *= bmax
