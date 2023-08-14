@@ -99,9 +99,6 @@ class LogNumber:
             return self.sign * exp(self.num)
         else:
             return self.sign * math.exp(self.num)
-    
-    def abs(self):
-        return LogNumber(1, self.num)
 
     def value(self):
         return (self.sign, self.num)
