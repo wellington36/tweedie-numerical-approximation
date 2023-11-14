@@ -1,4 +1,4 @@
-from pytweedie.tweedie_dias2 import pdfz_tweedie as pdfz_tweedie_dias
+from pytweedie.tweedie_well import pdfz_tweedie as pdfz_tweedie_dias
 import numpy as np
 from scipy import integrate
 import matplotlib.pyplot as plt
