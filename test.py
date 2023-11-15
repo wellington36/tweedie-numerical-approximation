@@ -59,13 +59,17 @@ def test_dias(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
         print(f'alpha: {alpha}, I: {(value, abs(value - 1))}')
 
 
+############ generate table ############
+
+
+
 ############ main ############
 if __name__ == '__main__':
 
     t = time.time()
 
-    test_well(alphas=[0.3])
-    test_dias(alphas=[0.3])
+    test_well(alphas=[ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99])
+    #test_dias()
     #visualization()
 
     print(f'time: {time.time() - t}')

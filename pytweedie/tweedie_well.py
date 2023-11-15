@@ -3,35 +3,16 @@ exp, log, mp, mpf
 from math import exp as mexp
 from sys import exit
 
-partials = {}
+from extrapolation import (Aitken_transform,
+                           Richardson_transform,
+                           Epsilon_transform,
+                           G_transform,
+                           Levin_t_transform,
+                           Levin_u_transform,
+                           Levin_v_transform
+)
 
-def startsum(mysum):
-    partials[mysum] = []
-
-def sumthis(x,mysum):
-    i = 0
-
-    for y in partials[mysum]:
-        if abs(x) < abs(y):
-            x, y = y, x
-        pass
-
-        hi = x + y
-        lo = y - (hi - x)
-
-        if lo:
-            partials[mysum][i] = lo
-            i += 1
-        pass
-
-        x = hi
-    
-    partials[mysum][i:] = [x]
-
-    return
-
-def sumall(mysum):
-    return sum(partials[mysum])
+transformation = Levin_t_transform
 
 ## Constants
 Psi_a = -5.7573749548413
@@ -136,8 +117,9 @@ def Nz_tweedie(z,theta,alpha):
         return(float(0.0))
     pass
 
-    startsum('sumd') # the sum of dk
+    suma = [mpf(0)]
     sumd = mpf(0) # initialize
+    prev_sum = mpf(0) # initial
     relerr = mpf(1) # a relative error
     k = 1 # k
     sign = -1 # the sign of (-1)**k
@@ -173,8 +155,18 @@ def Nz_tweedie(z,theta,alpha):
 # --------------------------------------------------------------------
 # sum without loss of precision
 # --------------------------------------------------------------------
-        sumthis(dk,'sumd')
-        sumd = sumall('sumd')
+        if dk == 0:
+            dk = eps
+        suma.append(dk + suma[-1])
+
+        if len(suma) > 3:
+            print(f"{fabs(suma[-2] - suma[-1])} {fabs(suma[-3] - suma[-2])}")
+            acel = transformation(suma, lib='mpmath')
+            sumd = acel[-1]
+        else:
+            sumd = suma[-1]
+        prev_sum = sumd
+
         relerr = fabs(bk/sumd)
         if dbgoutput :
             fbck.write("%4d %25.15e %25.15e %25.15e\n" %
@@ -187,6 +179,7 @@ def Nz_tweedie(z,theta,alpha):
             return(float('nan'))
         pass
     pass # end of while
+
     sumd *= mpf(1)/(pi*z)
     sumd *= bmax
     if dbgoutput:
