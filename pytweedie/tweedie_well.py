@@ -3,16 +3,7 @@ exp, log, mp, mpf
 from math import exp as mexp
 from sys import exit
 
-from extrapolation import (Aitken_transform,
-                           Richardson_transform,
-                           Epsilon_transform,
-                           G_transform,
-                           Levin_t_transform,
-                           Levin_u_transform,
-                           Levin_v_transform
-)
-
-transformation = Levin_t_transform
+from extrapolation import create_lognumber, LogNumber
 
 ## Constants
 Psi_a = -5.7573749548413
@@ -61,7 +52,7 @@ def bkshort(alpha,BB,k):
     xx = loggamma(1 + alpha*k)
     yy = k*log(BB)
     zz = loggamma(1 + k)
-    bk = exp(xx + yy - zz)
+    bk = LogNumber(1, xx + yy - zz)
     return bk
 
 def pdfx_tweedie(x,theta,alpha,lambdaa):
@@ -148,26 +139,23 @@ def Nz_tweedie(z,theta,alpha):
 # loop to sum the series
 # --------------------------------------------------------------------
     while ((sumd < 0) or (fabs(relerr) > eps)):
-        bk = bkshort(alpha,BB,k)/bmax
+        bk = bkshort(alpha,BB,k)/create_lognumber(bmax)
         ck = bk*sign
         dk = ck*sin(-k*pi*alpha)
         sign = -sign
 # --------------------------------------------------------------------
 # sum without loss of precision
 # --------------------------------------------------------------------
-        if dk == 0:
-            dk = eps
         suma.append(dk + suma[-1])
 
+        ###### Aitken #######
         if len(suma) > 3:
-            print(f"{fabs(suma[-2] - suma[-1])} {fabs(suma[-3] - suma[-2])}")
-            acel = transformation(suma, lib='mpmath')
+            acel = suma
             sumd = acel[-1]
         else:
             sumd = suma[-1]
-        prev_sum = sumd
 
-        relerr = fabs(bk/sumd)
+        relerr = fabs((bk/sumd).exp())
         if dbgoutput :
             fbck.write("%4d %25.15e %25.15e %25.15e\n" %
             (k,bk,sumd,relerr))
@@ -182,6 +170,7 @@ def Nz_tweedie(z,theta,alpha):
 
     sumd *= mpf(1)/(pi*z)
     sumd *= bmax
+    sumd = sumd.exp()
     if dbgoutput:
         fbck.close()
     pass
