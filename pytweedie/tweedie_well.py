@@ -2,8 +2,9 @@ from mpmath import loggamma, sqrt, sin, pi, fabs,\
 exp, log, mp, mpf
 from math import exp as mexp
 from sys import exit
-
 from extrapolation import create_lognumber, LogNumber
+
+method = 'Aitken'
 
 ## Constants
 Psi_a = -5.7573749548413
@@ -148,12 +149,29 @@ def Nz_tweedie(z,theta,alpha):
 # --------------------------------------------------------------------
         suma.append(dk + suma[-1])
 
-        ###### Aitken #######
-        if len(suma) > 3:
-            acel = suma
-            sumd = acel[-1]
-        else:
+        ###### None #######
+        if method == 'None':
             sumd = suma[-1]
+
+        ###### Aitken #######
+        if method == 'Aitken':
+            if len(suma) > 3:
+                sumd = (suma[-1] * suma[-3] - suma[-2]**2) / (suma[-1] + suma[-3] - suma[-2] * 2)
+            else:
+                sumd = suma[-1]
+        
+        ###### Richardson #######
+
+        ###### Epsilon #######
+
+        ###### G #######
+
+        ###### Levin-t #######
+
+        ###### Levin-u #######
+
+        ###### Levin-v #######
+
 
         relerr = fabs((bk/sumd).exp())
         if dbgoutput :

@@ -2,7 +2,7 @@ from pytweedie.tweedie_dias import pdfz_tweedie as pdfz_tweedie_dias
 from pytweedie.tweedie_well import pdfz_tweedie as pdfz_tweedie_well
 import numpy as np
 import matplotlib.pyplot as plt
-import time
+from time import time
 from scipy.special import roots_legendre
 
 def gauss_legendre_integration(f, a, b, n_points):
@@ -14,6 +14,12 @@ def gauss_legendre_integration(f, a, b, n_points):
     integral *= 0.5 * (b - a)
     
     return integral
+
+def alpha_to_points(alpha):
+    if alpha >= 0.99:
+        return 10_000
+    else:
+        return 1_000
 
 ############ visualization ############
 def visualization(tweedie_pdf=pdfz_tweedie_dias, alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
@@ -34,12 +40,12 @@ def test_well(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
         f = lambda x: pdfz_tweedie_well(x, -1/2, alpha)
 
         if alpha == 0.99:
-            value = gauss_legendre_integration(f, 1e-6, 20, n_points=10000)
+            value = gauss_legendre_integration(f, 1e-6, 20, n_points=alpha_to_points(alpha))
 
             print(f'alpha: {alpha}, I: {(value, abs(1 - value))}')
             continue
 
-        value = gauss_legendre_integration(f, 1e-6, 50, n_points=1000)
+        value = gauss_legendre_integration(f, 1e-6, 50, n_points=alpha_to_points(alpha))
 
         print(f'alpha: {alpha}, I: {(value, abs(value - 1))}')
 
@@ -49,27 +55,74 @@ def test_dias(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
         f = lambda x: pdfz_tweedie_dias(x, -1/2, alpha)
 
         if alpha == 0.99:
-            value = gauss_legendre_integration(f, 1e-6, 20, n_points=10000)
+            value = gauss_legendre_integration(f, 1e-6, 20, n_points=alpha_to_points(alpha))
 
             print(f'alpha: {alpha}, I: {(value, abs(1 - value))}')
             continue
 
-        value = gauss_legendre_integration(f, 1e-6, 50, n_points=1000)
+        value = gauss_legendre_integration(f, 1e-6, 50, n_points=alpha_to_points(alpha))
 
         print(f'alpha: {alpha}, I: {(value, abs(value - 1))}')
 
 
 ############ generate table ############
+def generate_table(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
+    print("alpha    |   error dias   |   error dias-with-aitken   |   time dias   |   time dias-with-aitken   |   score   ")
+
+    for alpha in alphas:
+        f_well = lambda x: pdfz_tweedie_well(x, -1/2, alpha)
+        f_dias = lambda x: pdfz_tweedie_dias(x, -1/2, alpha)
+        steps = 3
+
+        if alpha >= 0.99:
+            time_well = 0
+            for _ in range(steps):
+                t0 = time()
+                value_well = gauss_legendre_integration(f_well, 1e-6, 20, n_points=alpha_to_points(alpha))
+                time_well += time() - t0
+
+            time_well /= 3
+
+            time_dias = 0
+            for _ in range(steps):
+                t0 = time()
+                value_dias = gauss_legendre_integration(f_dias, 1e-6, 20, n_points=alpha_to_points(alpha))
+                time_dias += time() - t0
+
+            time_dias /= 3
+        
+        else:
+            time_well = 0
+            for _ in range(steps):
+                t0 = time()
+                value_well = gauss_legendre_integration(f_well, 1e-6, 50, n_points=alpha_to_points(alpha))
+                time_well += time() - t0
+
+            time_well /= 3
+
+            time_dias = 0
+            for _ in range(steps):
+                t0 = time()
+                value_dias = gauss_legendre_integration(f_dias, 1e-6, 50, n_points=alpha_to_points(alpha))
+                time_dias += time() - t0
+
+            time_dias /= 3
+        
+        error_dias = abs(value_dias - 1)
+        error_well = abs(value_well - 1)
+
+        print(f"{alpha} | {error_dias} | {error_well} | {time_dias/10} | {time_well/10} | {(error_dias - error_well)/min(error_dias, error_well)}")
 
 
 
 ############ main ############
 if __name__ == '__main__':
 
-    t = time.time()
+    t = time()
 
-    test_well(alphas=[ 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99])
+    #test_well()
     #test_dias()
     #visualization()
+    generate_table(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99])
 
-    print(f'time: {time.time() - t}')
+    print(f'time: {time() - t}')
