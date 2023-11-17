@@ -1,10 +1,11 @@
 from mpmath import loggamma, sqrt, sin, pi, fabs,\
 exp, log, mp, mpf
 from math import exp as mexp
+from math import isnan
 from sys import exit
 from extrapolation import create_lognumber, LogNumber
 
-method = 'Aitken'
+method = 'Epsilon'
 
 ## Constants
 Psi_a = -5.7573749548413
@@ -150,27 +151,55 @@ def Nz_tweedie(z,theta,alpha):
         suma.append(dk + suma[-1])
 
         ###### None #######
-        if method == 'None':
+        if method == "None":
             sumd = suma[-1]
 
         ###### Aitken #######
-        if method == 'Aitken':
-            if len(suma) > 3:
+        if method == "Aitken":
+            if len(suma) >= 3:
                 sumd = (suma[-1] * suma[-3] - suma[-2]**2) / (suma[-1] + suma[-3] - suma[-2] * 2)
             else:
                 sumd = suma[-1]
         
         ###### Richardson #######
+        if method == "Richardson":
+            if len(suma) >= 2:
+                sumd = suma[-1] * 2 - suma[int(len(suma)/2)-1]
+            else:
+                sumd = suma[-1]
 
         ###### Epsilon #######
+        if method == "Epsilon":
+            if len(suma) >= 3:
+                a1 = dk
+                a2 = suma[-2] - suma[-3]
+
+                if a1.exp() != 0 and a2.exp() != 0 and a1.exp() != a2.exp():
+                    sumd = suma[-2] + (a1**(-1) - a2**(-1))**(-1)
+                    
+                    #if isnan(sumd.exp()):
+                    #    print(suma[-1].exp(), suma[-2].exp(), suma[-3].exp())
+                    #    print(a2.exp() != 0)
+                else:
+                    sumd = suma[-1]
+            else:
+                sumd = suma[-1]
 
         ###### G #######
+        if method == "G":
+            pass
 
         ###### Levin-t #######
+        if method == "Levin-t":
+            pass
 
         ###### Levin-u #######
+        if method == "Levin-u":
+            pass
 
         ###### Levin-v #######
+        if method == "Levin-v":
+            pass
 
 
         relerr = fabs((bk/sumd).exp())

@@ -67,7 +67,7 @@ def test_dias(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
 
 ############ generate table ############
 def generate_table(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99]):
-    print("alpha    |   error dias   |   error dias-with-aitken   |   time dias   |   time dias-with-aitken   |   score   ")
+    print("alpha  |  error dias  |  error dias-with-extrapolation  |  time dias  |  time dias-with-extrapolation  |  score  ")
 
     for alpha in alphas:
         f_well = lambda x: pdfz_tweedie_well(x, -1/2, alpha)
@@ -111,7 +111,7 @@ def generate_table(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.
         error_dias = abs(value_dias - 1)
         error_well = abs(value_well - 1)
 
-        print(f"{alpha} | {error_dias} | {error_well} | {time_dias/10} | {time_well/10} | {(error_dias - error_well)/min(error_dias, error_well)}")
+        print(f"{alpha} | {error_dias} | {error_well} | {100 * time_dias/alpha_to_points(alpha)} | {100 * time_well/alpha_to_points(alpha)} | {(error_dias - error_well)/min(error_dias, error_well)}")
 
 
 
@@ -123,6 +123,6 @@ if __name__ == '__main__':
     #test_well()
     #test_dias()
     #visualization()
-    generate_table(alphas=[0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99])
+    generate_table()
 
     print(f'time: {time() - t}')
