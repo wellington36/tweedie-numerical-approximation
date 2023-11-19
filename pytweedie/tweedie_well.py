@@ -5,7 +5,7 @@ from math import isnan
 from sys import exit
 from extrapolation import create_lognumber, LogNumber
 
-method = 'Epsilon'
+method = 'Levin-t'
 
 ## Constants
 Psi_a = -5.7573749548413
@@ -110,9 +110,9 @@ def Nz_tweedie(z,theta,alpha):
         return(float(0.0))
     pass
 
-    suma = [mpf(0)]
+    aux = [create_lognumber(mpf(0))]
+    suma = [create_lognumber(mpf(0))]
     sumd = mpf(0) # initialize
-    prev_sum = mpf(0) # initial
     relerr = mpf(1) # a relative error
     k = 1 # k
     sign = -1 # the sign of (-1)**k
@@ -187,19 +187,81 @@ def Nz_tweedie(z,theta,alpha):
 
         ###### G #######
         if method == "G":
-            pass
+            aux.append(dk)
+
+            if len(suma) >= 4:
+                t0 = aux[-1] * aux[-3] + aux[-4] * aux[-2] + aux[-3] * aux[-2] -\
+                    aux[-2]**2 - aux[-1] * aux[-4] - aux[-3]**2
+                if (t0).exp() != 0 and (aux[-2] - aux[-1]).exp() != 0:
+                    t1 = (aux[-2] * aux[-4] - aux[-3]**2) * (aux[-2] - aux[-3])/t0
+
+                    if t1 <= 0.005:
+                        sumd = suma[-1] - (aux[-3] - aux[-2]) *\
+                            (aux[-2]**2 - aux[-1]*aux[-3])*1/t0
+                    else:
+                        sumd = suma[-1] - (aux[-3] - aux[-2]) * aux[-2] / \
+                            (aux[-2] - aux[-1])
+                else:
+                    sumd = suma[-1]
+            else:
+                sumd = suma[-1]
 
         ###### Levin-t #######
         if method == "Levin-t":
-            pass
+            aux.append(dk)
+            n = len(suma) - 1
+
+            def g(n):
+                return aux[n]
+
+            if n >= 2:
+                if aux[-1].exp() != 0 and aux[-2].exp() != 0 and (aux[-1].exp() != aux[-2].exp()):
+                    M = (suma[-1]/g(n) - suma[-2]) / (aux[-1]**(-1) - aux[-2]**(-1))
+                    N = (create_lognumber(1)/g(n)) / (aux[-1]**(-1) - aux[-2]**(-1))
+
+                    sumd = M / N
+                else:
+                    sumd = suma[-1]
+            else:
+                sumd = suma[-1]
 
         ###### Levin-u #######
         if method == "Levin-u":
-            pass
+            aux.append(dk)
+            n = len(suma) - 1
+
+            def g(n):
+                return aux[n] * (n + 1)
+
+            if n >= 2:
+                if aux[-1].exp() != 0 and aux[-2].exp() != 0 and (aux[-1].exp() != aux[-2].exp()):
+                    M = (suma[-1]/g(n) - suma[-2]) / (aux[-1]**(-1) - aux[-2]**(-1))
+                    N = (create_lognumber(1)/g(n)) / (aux[-1]**(-1) - aux[-2]**(-1))
+
+                    sumd = M / N
+                else:
+                    sumd = suma[-1]
+            else:
+                sumd = suma[-1]
 
         ###### Levin-v #######
         if method == "Levin-v":
-            pass
+            aux.append(dk)
+            n = len(suma) - 1
+
+            def g(n):
+                return (aux[n] * aux[n+1]) / (aux[n] - aux[n+1])
+
+            if n >= 2:
+                if aux[-1].exp() != 0 and aux[-2].exp() != 0 and (aux[-1].exp() != aux[-2].exp()):
+                    M = (suma[-1]/g(n) - suma[-2]) / (aux[-1]**(-1) - aux[-2]**(-1))
+                    N = (create_lognumber(1)/g(n)) / (aux[-1]**(-1) - aux[-2]**(-1))
+
+                    sumd = M / N
+                else:
+                    sumd = suma[-1]
+            else:
+                sumd = suma[-1]
 
 
         relerr = fabs((bk/sumd).exp())
